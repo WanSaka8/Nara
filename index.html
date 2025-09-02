@@ -64,7 +64,7 @@
 
         .search-form {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            grid-template-columns: 2fr 1fr 1fr auto;
             gap: 15px;
             align-items: end;
         }
@@ -476,20 +476,6 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">📂 Kategori</label>
-                        <select class="form-select" id="categorySelect">
-                            <option value="general">🌍 Umum</option>
-                            <option value="technology">💻 Teknologi</option>
-                            <option value="business">💼 Bisnis</option>
-                            <option value="sports">⚽ Olahraga</option>
-                            <option value="health">🏥 Kesehatan</option>
-                            <option value="entertainment">🎬 Hiburan</option>
-                            <option value="science">🔬 Sains</option>
-                            <option value="politics">🏛️ Politik</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
                         <label class="form-label">🌏 Negara</label>
                         <select class="form-select" id="countrySelect">
                             <option value="id">🇮🇩 Indonesia</option>
@@ -555,7 +541,6 @@
         const searchForm = document.getElementById('searchForm');
         const searchQuery = document.getElementById('searchQuery');
         const languageSelect = document.getElementById('languageSelect');
-        const categorySelect = document.getElementById('categorySelect');
         const countrySelect = document.getElementById('countrySelect');
         const historyBtn = document.getElementById('historyBtn');
         const chatFab = document.getElementById('chatFab');
@@ -571,28 +556,25 @@
         let searchHistory = [];
 
         // Build News API URL with parameters
-        function buildNewsURL(query, language, category, country) {
+        function buildNewsURL(query, language, country) {
             let url = `${NEWS_BASE_URL}?q=${encodeURIComponent(query)}`;
             if (language) url += `&language=${language}`;
-            if (category) url += `&category=${category}`;
             if (country) url += `&country=${country}`;
             return url;
         }
 
         // Save search to history
-        function saveSearchToHistory(query, language, category, country) {
+        function saveSearchToHistory(query, language, country) {
             const searchParams = {
                 query,
                 language,
-                category,
                 country,
                 timestamp: new Date().toISOString()
             };
             
             // Remove duplicate searches
             searchHistory = searchHistory.filter(item => 
-                !(item.query === query && item.language === language && 
-                  item.category === category && item.country === country)
+                !(item.query === query && item.language === language && item.country === country)
             );
             
             searchHistory.unshift(searchParams);
@@ -613,7 +595,7 @@
             let historyText = 'Riwayat Pencarian:\n\n';
             searchHistory.forEach((item, index) => {
                 const date = new Date(item.timestamp).toLocaleDateString('id-ID');
-                historyText += `${index + 1}. "${item.query}" - ${item.category} (${item.language}) - ${date}\n`;
+                historyText += `${index + 1}. "${item.query}" - ${item.language} - ${item.country} - ${date}\n`;
             });
             
             alert(historyText);
@@ -655,13 +637,13 @@
         }
 
         // Fetch and display news
-        async function loadNews(query = 'berita', language = 'id', category = 'general', country = 'id') {
+        async function loadNews(query = 'berita', language = 'id', country = 'id') {
             try {
                 loadingElement.style.display = 'block';
                 errorElement.style.display = 'none';
                 newsContainer.innerHTML = '';
 
-                const newsURL = buildNewsURL(query, language, category, country);
+                const newsURL = buildNewsURL(query, language, country);
                 console.log('Fetching news from:', newsURL);
 
                 const response = await fetch(newsURL);
@@ -678,7 +660,7 @@
                 }
 
                 // Save successful search to history
-                saveSearchToHistory(query, language, category, country);
+                saveSearchToHistory(query, language, country);
 
                 data.results.forEach(article => {
                     const card = createNewsCard(article);
@@ -691,7 +673,7 @@
                 const resultCount = data.results.length;
                 const searchInfo = document.createElement('div');
                 searchInfo.style.cssText = 'text-align: center; color: white; margin-bottom: 20px; font-size: 1.1rem;';
-                searchInfo.innerHTML = `✅ Menampilkan ${resultCount} berita untuk "<strong>${query}</strong>" - Kategori: ${category} - Bahasa: ${language}`;
+                searchInfo.innerHTML = `✅ Menampilkan ${resultCount} berita untuk "<strong>${query}</strong>" - Bahasa: ${language} - Negara: ${country}`;
                 newsContainer.parentNode.insertBefore(searchInfo, newsContainer);
                 
             } catch (error) {
@@ -825,7 +807,6 @@
             
             const query = searchQuery.value.trim() || 'berita';
             const language = languageSelect.value;
-            const category = categorySelect.value;
             const country = countrySelect.value;
             
             // Clear previous search results info
@@ -834,7 +815,7 @@
                 existingInfo.remove();
             }
             
-            loadNews(query, language, category, country);
+            loadNews(query, language, country);
         });
 
         // History button event listener
