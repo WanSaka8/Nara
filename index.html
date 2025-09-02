@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +35,7 @@
         header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         header p {
@@ -81,7 +82,8 @@
             font-weight: 600;
         }
 
-        .form-input, .form-select {
+        .form-input,
+        .form-select {
             padding: 12px 16px;
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
@@ -95,7 +97,8 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        .form-input:focus, .form-select:focus {
+        .form-input:focus,
+        .form-select:focus {
             outline: none;
             border-color: #42b883;
             background: rgba(255, 255, 255, 0.15);
@@ -107,7 +110,8 @@
             color: white;
         }
 
-        .search-btn, .history-btn {
+        .search-btn,
+        .history-btn {
             padding: 12px 24px;
             border: none;
             border-radius: 12px;
@@ -149,7 +153,7 @@
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-            
+
             .search-buttons {
                 justify-content: center;
             }
@@ -173,14 +177,14 @@
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
         }
 
         .news-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
         .news-image {
@@ -264,7 +268,7 @@
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         /* Floating Action Button */
@@ -278,7 +282,7 @@
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             z-index: 1000;
             display: flex;
@@ -290,7 +294,7 @@
 
         .fab:hover {
             transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
         }
 
         /* Chat Modal */
@@ -302,7 +306,7 @@
             height: 500px;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             display: none;
             flex-direction: column;
             z-index: 1001;
@@ -415,23 +419,23 @@
             .container {
                 padding: 15px;
             }
-            
+
             header h1 {
                 font-size: 2rem;
             }
-            
+
             .news-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-            
+
             .chat-modal {
                 width: calc(100vw - 20px);
                 right: 10px;
                 left: 10px;
                 bottom: 100px;
             }
-            
+
             .fab {
                 bottom: 20px;
                 right: 20px;
@@ -439,12 +443,13 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
             <h1>🗞️ Portal Berita Indonesia</h1>
             <p>Berita terkini dan terpercaya dari berbagai sumber</p>
-            
+
             <!-- Search Section -->
             <div class="search-section">
                 <div class="search-title">
@@ -453,19 +458,14 @@
                 <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px; font-size: 0.95rem;">
                     Cari berita terbaru dari berbagai sumber tepercaya menggunakan API H56 Search News
                 </p>
-                
+
                 <form class="search-form" id="searchForm">
                     <div class="form-group">
                         <label class="form-label">📝 Kata Kunci Pencarian</label>
-                        <input 
-                            type="text" 
-                            class="form-input" 
-                            id="searchQuery"
-                            placeholder="Masukkan kata kunci, contoh: teknologi, olahraga, politik..."
-                            value="berita"
-                        >
+                        <input type="text" class="form-input" id="searchQuery"
+                            placeholder="Masukkan kata kunci, contoh: teknologi, olahraga, politik..." value="berita">
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">🌐 Bahasa Berita</label>
                         <select class="form-select" id="languageSelect">
@@ -474,7 +474,7 @@
                             <option value="ms">🇲🇾 Melayu</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">🌏 Negara</label>
                         <select class="form-select" id="countrySelect">
@@ -485,7 +485,7 @@
                             <option value="gb">🇬🇧 Inggris</option>
                         </select>
                     </div>
-                    
+
                     <div class="search-buttons">
                         <button type="submit" class="search-btn">🔎 Cari Berita</button>
                         <button type="button" class="history-btn" id="historyBtn">⏰ Riwayat</button>
@@ -493,13 +493,13 @@
                 </form>
             </div>
         </header>
-        
+
         <div id="loading" class="loading">
             <p>⏳ Memuat berita terbaru...</p>
         </div>
-        
+
         <div id="news-container" class="news-grid"></div>
-        
+
         <div id="error-message" class="error" style="display: none;"></div>
     </div>
 
@@ -511,7 +511,7 @@
     <!-- Chat Modal -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-header">
-            <h3>🤖 Chat dengan AI</h3>
+            <h3>🤖</h3>
             <button class="close-chat" id="closeChat">&times;</button>
         </div>
         <div class="chat-messages" id="chatMessages">
@@ -522,14 +522,47 @@
         <div class="typing" id="typing">AI sedang mengetik...</div>
         <div class="chat-input-container">
             <input type="text" class="chat-input" id="chatInput" placeholder="Ketik pesan Anda...">
-            <button class="send-button" id="sendButton">Kirim</button>
+            <button class="send-button" id="sendButton">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                </svg>
+            </button>
+
+            <style>
+                .send-button {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    background-color: #1e88e5;
+                    color: white;
+                    padding: 10px 16px;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: bold;
+                    transition: all 0.2s ease-in-out;
+                }
+
+                .send-button:hover {
+                    background-color: #1565c0;
+                    transform: scale(1.05);
+                }
+
+                .send-button svg {
+                    width: 20px;
+                    height: 20px;
+                    fill: white;
+                }
+            </style>
+
         </div>
     </div>
 
     <script>
         // News API Configuration
         const NEWS_BASE_URL = 'https://h56-search-news-api.netlify.app/api/news';
-        
+
         // Gemini AI API Configuration
         const GEMINI_API_KEY = 'AIzaSyDlxv6QGzHPyJSLcVD3DhmFagXdGROwakE';
         const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
@@ -571,14 +604,14 @@
                 country,
                 timestamp: new Date().toISOString()
             };
-            
+
             // Remove duplicate searches
-            searchHistory = searchHistory.filter(item => 
+            searchHistory = searchHistory.filter(item =>
                 !(item.query === query && item.language === language && item.country === country)
             );
-            
+
             searchHistory.unshift(searchParams);
-            
+
             // Keep only last 10 searches
             if (searchHistory.length > 10) {
                 searchHistory = searchHistory.slice(0, 10);
@@ -591,21 +624,21 @@
                 alert('Belum ada riwayat pencarian');
                 return;
             }
-            
+
             let historyText = 'Riwayat Pencarian:\n\n';
             searchHistory.forEach((item, index) => {
                 const date = new Date(item.timestamp).toLocaleDateString('id-ID');
                 historyText += `${index + 1}. "${item.query}" - ${item.language} - ${item.country} - ${date}\n`;
             });
-            
+
             alert(historyText);
         }
 
         // Format date
         function formatDate(dateString) {
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
+            const options = {
+                year: 'numeric',
+                month: 'long',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit'
@@ -617,7 +650,7 @@
         function createNewsCard(article) {
             const card = document.createElement('div');
             card.className = 'news-card';
-            
+
             card.innerHTML = `
                 <div class="news-image">
                     ${article.image_url ? `<img src="${article.image_url}" alt="${article.title}" onerror="this.style.display='none'; this.parentNode.innerHTML='📰'">` : '📰'}
@@ -632,7 +665,7 @@
                     <a href="${article.link}" target="_blank" class="read-more">Baca Selengkapnya</a>
                 </div>
             `;
-            
+
             return card;
         }
 
@@ -647,14 +680,14 @@
                 console.log('Fetching news from:', newsURL);
 
                 const response = await fetch(newsURL);
-                
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
                 console.log('API Response:', data);
-                
+
                 if (!data || data.status !== 'success' || !data.results || data.results.length === 0) {
                     throw new Error('Tidak ada berita yang ditemukan untuk pencarian ini');
                 }
@@ -668,14 +701,14 @@
                 });
 
                 loadingElement.style.display = 'none';
-                
+
                 // Update loading text to show search results
                 const resultCount = data.results.length;
                 const searchInfo = document.createElement('div');
                 searchInfo.style.cssText = 'text-align: center; color: white; margin-bottom: 20px; font-size: 1.1rem;';
                 searchInfo.innerHTML = `✅ Menampilkan ${resultCount} berita untuk "<strong>${query}</strong>" - Bahasa: ${language} - Negara: ${country}`;
                 newsContainer.parentNode.insertBefore(searchInfo, newsContainer);
-                
+
             } catch (error) {
                 console.error('Error loading news:', error);
                 loadingElement.style.display = 'none';
@@ -719,9 +752,9 @@
             try {
                 showTyping();
                 sendButton.disabled = true;
-                
+
                 chatHistory.push({ role: "user", content: message });
-                
+
                 // Build conversation context for Gemini
                 let conversationText = "Anda adalah asisten AI yang ramah dan membantu. Jawab pertanyaan dalam bahasa Indonesia dengan sopan dan informatif.\n\n";
                 chatHistory.forEach(msg => {
@@ -732,7 +765,7 @@
                     }
                 });
                 conversationText += "Assistant: ";
-                
+
                 const response = await fetch(GEMINI_API_URL, {
                     method: 'POST',
                     headers: {
@@ -758,18 +791,18 @@
                 }
 
                 const data = await response.json();
-                
+
                 if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
                     throw new Error('Respons AI tidak valid');
                 }
-                
+
                 const aiMessage = data.candidates[0].content.parts[0].text;
-                
+
                 chatHistory.push({ role: "assistant", content: aiMessage });
-                
+
                 hideTyping();
                 addMessage(aiMessage);
-                
+
             } catch (error) {
                 hideTyping();
                 addMessage('Maaf, terjadi kesalahan saat menghubungi AI. Silakan coba lagi.');
@@ -804,17 +837,17 @@
         // Search form event listener
         searchForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
+
             const query = searchQuery.value.trim() || 'berita';
             const language = languageSelect.value;
             const country = countrySelect.value;
-            
+
             // Clear previous search results info
             const existingInfo = document.querySelector('[style*="text-align: center; color: white"]');
             if (existingInfo) {
                 existingInfo.remove();
             }
-            
+
             loadNews(query, language, country);
         });
 
@@ -832,4 +865,5 @@
         loadNews();
     </script>
 </body>
+
 </html>
