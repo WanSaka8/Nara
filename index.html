@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Berita Indonesia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .form-input, .form-select {
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #42b883;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(66, 184, 131, 0.3);
+        }
+
+        .form-select option {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .search-btn, .history-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #42b883 0%, #369870 100%);
+            color: white;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(66, 184, 131, 0.4);
+        }
+
+        .history-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .history-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .search-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .search-form {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .search-buttons {
+                justify-content: center;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin: 50px 0;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #f0f2f5, #e4e6ea);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #65676b;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 20px;
+        }
+
+        .news-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #1877f2;
+            line-height: 1.4;
+        }
+
+        .news-description {
+            color: #65676b;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #8a8d91;
+            margin-bottom: 15px;
+        }
+
+        .news-source {
+            font-weight: 600;
+            color: #42b883;
+        }
+
+        .news-date {
+            font-style: italic;
+        }
+
+        .read-more {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .error {
+            text-align: center;
+            color: #ff6b6b;
+            font-size: 1.1rem;
+            margin: 50px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        }
+
+        /* Chat Modal */
+        .chat-modal {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid #e4e6ea;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: #667eea;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .typing {
+            display: none;
+            align-self: flex-start;
+            background: #f0f2f5;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-style: italic;
+            color: #65676b;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .chat-modal {
+                width: calc(100vw - 20px);
+                right: 10px;
+                left: 10px;
+                bottom: 100px;
+            }
+            
+            .fab {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗞️ Portal Berita Indonesia</h1>
+            <p>Berita terkini dan terpercaya dari berbagai sumber</p>
+            
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-title">
+                    🔍 Live News Search Demo
+                </div>
+                <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px; font-size: 0.95rem;">
+                    Cari berita terbaru dari berbagai sumber tepercaya menggunakan API H56 Search News
+                </p>
+                
+                <form class="search-form" id="searchForm">
+                    <div class="form-group">
+                        <label class="form-label">📝 Kata Kunci Pencarian</label>
+                        <input 
+                            type="text" 
+                            class="form-input" 
+                            id="searchQuery"
+                            placeholder="Masukkan kata kunci, contoh: teknologi, olahraga, politik..."
+                            value="berita"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">🌐 Bahasa Berita</label>
+                        <select class="form-select" id="languageSelect">
+                            <option value="id">🇮🇩 Indonesia</option>
+                            <option value="en">🇺🇸 English</option>
+                            <option value="ms">🇲🇾 Melayu</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">📂 Kategori</label>
+                        <select class="form-select" id="categorySelect">
+                            <option value="general">🌍 Umum</option>
+                            <option value="technology">💻 Teknologi</option>
+                            <option value="business">💼 Bisnis</option>
+                            <option value="sports">⚽ Olahraga</option>
+                            <option value="health">🏥 Kesehatan</option>
+                            <option value="entertainment">🎬 Hiburan</option>
+                            <option value="science">🔬 Sains</option>
+                            <option value="politics">🏛️ Politik</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">🌏 Negara</label>
+                        <select class="form-select" id="countrySelect">
+                            <option value="id">🇮🇩 Indonesia</option>
+                            <option value="us">🇺🇸 Amerika</option>
+                            <option value="my">🇲🇾 Malaysia</option>
+                            <option value="sg">🇸🇬 Singapura</option>
+                            <option value="gb">🇬🇧 Inggris</option>
+                        </select>
+                    </div>
+                    
+                    <div class="search-buttons">
+                        <button type="submit" class="search-btn">🔎 Cari Berita</button>
+                        <button type="button" class="history-btn" id="historyBtn">⏰ Riwayat</button>
+                    </div>
+                </form>
+            </div>
+        </header>
+        
+        <div id="loading" class="loading">
+            <p>⏳ Memuat berita terbaru...</p>
+        </div>
+        
+        <div id="news-container" class="news-grid"></div>
+        
+        <div id="error-message" class="error" style="display: none;"></div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="chatFab" title="Chat dengan AI">
+        💬
+    </button>
+
+    <!-- Chat Modal -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-header">
+            <h3>🤖 Chat dengan AI</h3>
+            <button class="close-chat" id="closeChat">&times;</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                Halo! Saya AI assistant Anda. Ada yang bisa saya bantu? 😊
+            </div>
+        </div>
+        <div class="typing" id="typing">AI sedang mengetik...</div>
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ketik pesan Anda...">
+            <button class="send-button" id="sendButton">Kirim</button>
+        </div>
+    </div>
+
+    <script>
+        // News API Configuration
+        const NEWS_BASE_URL = 'https://h56-search-news-api.netlify.app/api/news';
+        
+        // Gemini AI API Configuration
+        const GEMINI_API_KEY = 'AIzaSyDlxv6QGzHPyJSLcVD3DhmFagXdGROwakE';
+        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+
+        // DOM Elements
+        const newsContainer = document.getElementById('news-container');
+        const loadingElement = document.getElementById('loading');
+        const errorElement = document.getElementById('error-message');
+        const searchForm = document.getElementById('searchForm');
+        const searchQuery = document.getElementById('searchQuery');
+        const languageSelect = document.getElementById('languageSelect');
+        const categorySelect = document.getElementById('categorySelect');
+        const countrySelect = document.getElementById('countrySelect');
+        const historyBtn = document.getElementById('historyBtn');
+        const chatFab = document.getElementById('chatFab');
+        const chatModal = document.getElementById('chatModal');
+        const closeChat = document.getElementById('closeChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typing');
+
+        // Chat functionality
+        let chatHistory = [];
+        let searchHistory = [];
+
+        // Build News API URL with parameters
+        function buildNewsURL(query, language, category, country) {
+            let url = `${NEWS_BASE_URL}?q=${encodeURIComponent(query)}`;
+            if (language) url += `&language=${language}`;
+            if (category) url += `&category=${category}`;
+            if (country) url += `&country=${country}`;
+            return url;
+        }
+
+        // Save search to history
+        function saveSearchToHistory(query, language, category, country) {
+            const searchParams = {
+                query,
+                language,
+                category,
+                country,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Remove duplicate searches
+            searchHistory = searchHistory.filter(item => 
+                !(item.query === query && item.language === language && 
+                  item.category === category && item.country === country)
+            );
+            
+            searchHistory.unshift(searchParams);
+            
+            // Keep only last 10 searches
+            if (searchHistory.length > 10) {
+                searchHistory = searchHistory.slice(0, 10);
+            }
+        }
+
+        // Show search history
+        function showSearchHistory() {
+            if (searchHistory.length === 0) {
+                alert('Belum ada riwayat pencarian');
+                return;
+            }
+            
+            let historyText = 'Riwayat Pencarian:\n\n';
+            searchHistory.forEach((item, index) => {
+                const date = new Date(item.timestamp).toLocaleDateString('id-ID');
+                historyText += `${index + 1}. "${item.query}" - ${item.category} (${item.language}) - ${date}\n`;
+            });
+            
+            alert(historyText);
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return new Date(dateString).toLocaleDateString('id-ID', options);
+        }
+
+        // Create news card
+        function createNewsCard(article) {
+            const card = document.createElement('div');
+            card.className = 'news-card';
+            
+            card.innerHTML = `
+                <div class="news-image">
+                    ${article.image_url ? `<img src="${article.image_url}" alt="${article.title}" onerror="this.style.display='none'; this.parentNode.innerHTML='📰'">` : '📰'}
+                </div>
+                <div class="news-content">
+                    <h2 class="news-title">${article.title}</h2>
+                    <p class="news-description">${article.description || 'Tidak ada deskripsi tersedia'}</p>
+                    <div class="news-meta">
+                        <span class="news-source">${article.source_id || 'Sumber Tidak Diketahui'}</span>
+                        <span class="news-date">${formatDate(article.pubDate)}</span>
+                    </div>
+                    <a href="${article.link}" target="_blank" class="read-more">Baca Selengkapnya</a>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Fetch and display news
+        async function loadNews(query = 'berita', language = 'id', category = 'general', country = 'id') {
+            try {
+                loadingElement.style.display = 'block';
+                errorElement.style.display = 'none';
+                newsContainer.innerHTML = '';
+
+                const newsURL = buildNewsURL(query, language, category, country);
+                console.log('Fetching news from:', newsURL);
+
+                const response = await fetch(newsURL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('API Response:', data);
+                
+                if (!data || data.status !== 'success' || !data.results || data.results.length === 0) {
+                    throw new Error('Tidak ada berita yang ditemukan untuk pencarian ini');
+                }
+
+                // Save successful search to history
+                saveSearchToHistory(query, language, category, country);
+
+                data.results.forEach(article => {
+                    const card = createNewsCard(article);
+                    newsContainer.appendChild(card);
+                });
+
+                loadingElement.style.display = 'none';
+                
+                // Update loading text to show search results
+                const resultCount = data.results.length;
+                const searchInfo = document.createElement('div');
+                searchInfo.style.cssText = 'text-align: center; color: white; margin-bottom: 20px; font-size: 1.1rem;';
+                searchInfo.innerHTML = `✅ Menampilkan ${resultCount} berita untuk "<strong>${query}</strong>" - Kategori: ${category} - Bahasa: ${language}`;
+                newsContainer.parentNode.insertBefore(searchInfo, newsContainer);
+                
+            } catch (error) {
+                console.error('Error loading news:', error);
+                loadingElement.style.display = 'none';
+                errorElement.style.display = 'block';
+                errorElement.innerHTML = `
+                    <h3>❌ Error Loading News</h3>
+                    <p>${error.message}</p>
+                    <p><small>Coba dengan kata kunci atau filter yang berbeda</small></p>
+                    <button onclick="loadNews()" style="margin-top: 10px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">Coba Lagi</button>
+                `;
+            }
+        }
+
+        // Chat functionality
+        function toggleChat() {
+            const isVisible = chatModal.style.display === 'flex';
+            chatModal.style.display = isVisible ? 'none' : 'flex';
+            if (!isVisible) {
+                chatInput.focus();
+            }
+        }
+
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+            messageDiv.textContent = content;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTyping() {
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTyping() {
+            typingIndicator.style.display = 'none';
+        }
+
+        async function sendToAI(message) {
+            try {
+                showTyping();
+                sendButton.disabled = true;
+                
+                chatHistory.push({ role: "user", content: message });
+                
+                // Build conversation context for Gemini
+                let conversationText = "Anda adalah asisten AI yang ramah dan membantu. Jawab pertanyaan dalam bahasa Indonesia dengan sopan dan informatif.\n\n";
+                chatHistory.forEach(msg => {
+                    if (msg.role === "user") {
+                        conversationText += `User: ${msg.content}\n`;
+                    } else {
+                        conversationText += `Assistant: ${msg.content}\n`;
+                    }
+                });
+                conversationText += "Assistant: ";
+                
+                const response = await fetch(GEMINI_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: conversationText
+                            }]
+                        }],
+                        generationConfig: {
+                            temperature: 0.7,
+                            topK: 40,
+                            topP: 0.95,
+                            maxOutputTokens: 500,
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal mendapatkan respons dari AI');
+                }
+
+                const data = await response.json();
+                
+                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+                    throw new Error('Respons AI tidak valid');
+                }
+                
+                const aiMessage = data.candidates[0].content.parts[0].text;
+                
+                chatHistory.push({ role: "assistant", content: aiMessage });
+                
+                hideTyping();
+                addMessage(aiMessage);
+                
+            } catch (error) {
+                hideTyping();
+                addMessage('Maaf, terjadi kesalahan saat menghubungi AI. Silakan coba lagi.');
+                console.error('Gemini API Error:', error);
+            } finally {
+                sendButton.disabled = false;
+            }
+        }
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                chatInput.value = '';
+                sendToAI(message);
+            }
+        }
+
+        // Event listeners
+        chatFab.addEventListener('click', toggleChat);
+        closeChat.addEventListener('click', () => {
+            chatModal.style.display = 'none';
+        });
+
+        sendButton.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Search form event listener
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const query = searchQuery.value.trim() || 'berita';
+            const language = languageSelect.value;
+            const category = categorySelect.value;
+            const country = countrySelect.value;
+            
+            // Clear previous search results info
+            const existingInfo = document.querySelector('[style*="text-align: center; color: white"]');
+            if (existingInfo) {
+                existingInfo.remove();
+            }
+            
+            loadNews(query, language, category, country);
+        });
+
+        // History button event listener
+        historyBtn.addEventListener('click', showSearchHistory);
+
+        // Close chat when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!chatModal.contains(e.target) && !chatFab.contains(e.target)) {
+                chatModal.style.display = 'none';
+            }
+        });
+
+        // Load default news when page loads
+        loadNews();
+    </script>
+</body>
+</html>
